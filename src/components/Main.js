@@ -19,7 +19,7 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
             .catch((err) => {
                 console.log(err);
             });
-    },[userName, userDescription, userAvatar]);
+    },[]);
 
     React.useEffect(() => {
         api
@@ -30,7 +30,7 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
             .catch((err) => {
                 console.log(err);
             })
-    }, [cards]);
+    }, []);
 
     return (
         <main className="main">
@@ -51,11 +51,11 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
 
             <section className="elements">
                 <ul className="element-list">
-                    {cards.map((item, i) => 
+                    {cards.map((item) => 
                         (
                         <Card
                             card = { item }
-                            key = { i }
+                            key = { item._id }
                             onCardClick={ onCardClick }
                         />
                         )

@@ -18,16 +18,21 @@ function App() {
     setIsAddPlacePopupOpen(true);
     
   }
+  function handleCardClick(selectedCard) {
+    setSelectedCard(selectedCard);
+  }
 
   function closeAllPopups() {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
+    setSelectedCard();
   }
 
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
+  const [selectedCard, setSelectedCard] = React.useState();
 
   return (
   <div>
@@ -36,6 +41,7 @@ function App() {
       onEditProfile = { handleEditProfileClick }
       onAddPlace = { handleAddPlaceClick }
       onEditAvatar = { handleEditAvatarClick }
+      onCardClick={ handleCardClick }
     />
     <Footer/>
 
@@ -46,11 +52,11 @@ function App() {
       children={(
         <>
           <label className="popup__field">
-            <input type="text" id="name-input" className="popup__input popup__input_type_name" name="name" placeholder="Имя" required minlength="2" maxlength="40" />
+            <input type="text" id="name-input" className="popup__input popup__input_type_name" name="name" placeholder="Имя" required minLength="2" maxLength="40" />
             <span className="popup__input-error name-input-error"></span>
           </label>
           <label className="popup__field">
-              <input type="text" id="about-input" className="popup__input popup__input_type_additional" name="additional" placeholder="О себе" required minlength="2" maxlength="200" />
+              <input type="text" id="about-input" className="popup__input popup__input_type_additional" name="additional" placeholder="О себе" required minLength="2" maxLength="200" />
               <span className="popup__input-error about-input-error"></span>
           </label>
         </>
@@ -66,7 +72,7 @@ function App() {
       children={(
         <>
           <label className="popup__field">
-            <input type="text" id="place-name-input" className="popup__input popup__input_type_place-name" name="place-name" placeholder="Название" required minlength="2" maxlength="30"/>
+            <input type="text" id="place-name-input" className="popup__input popup__input_type_place-name" name="place-name" placeholder="Название" required minLength="2" maxLength="30"/>
             <span className="popup__input-error place-name-input-error"></span>
           </label>
           <label className="popup__field">
@@ -103,21 +109,11 @@ function App() {
       onClose={ closeAllPopups }
     />    
 
-    <ImagePopup/>
+    <ImagePopup
+      card={ selectedCard }
+      onClose={ closeAllPopups }
+    />
 
-    <template id="elementTemplate">
-      <li className="element">
-        <img src="#" alt="." className="element__photo"/>
-        <div className="element__description">
-          <p className="element__name"></p>
-          <div className="element__like-container">
-            <button className="button element__like-button" type="button"></button>
-            <p className="element__like-counter"></p>
-          </div>
-        </div>
-        <button type="button" aria-label="Удалить" className="button element__delete-button"></button>
-      </li>
-    </template>
 </div>
 
     

@@ -8,6 +8,7 @@ import api from "../utils/Api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
+import AddPlacePopup from "./AddPlacePopup";
 
 
 function App() {
@@ -83,6 +84,20 @@ function App() {
       });
   }
 
+  function handleAddPlaceSubmit({ name, link }) {
+    api
+    .postNewCard({
+      name, link
+    })
+    .then((newCard) => {
+      setCards([newCard, ...cards]);
+      closeAllPopups();
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  }
+
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
@@ -135,22 +150,11 @@ function App() {
         onUpdateUser={ handleUpdateUser }
       />
 
-      <PopupWithForm
-        title = {'Новое место'}
-        name = {'new-place'}
-        buttonText = {'Создать'}
-        isOpen={ isAddPlacePopupOpen }
-        onClose={ closeAllPopups }
-        >
-          <label className="popup__field">
-              <input type="text" id="place-name-input" className="popup__input popup__input_type_place-name" name="place-name" placeholder="Название" required minLength="2" maxLength="30"/>
-              <span className="popup__input-error place-name-input-error"></span>
-            </label>
-            <label className="popup__field">
-              <input type="url" id="picture-ref-input" className="popup__input popup__input_type_picture-ref" name="picture-ref" placeholder="Ссылка на картинку" required/>
-              <span className="popup__input-error picture-ref-input-error"></span>
-            </label>
-        </PopupWithForm>
+      <AddPlacePopup
+        isOpen={isAddPlacePopupOpen} 
+        onClose={closeAllPopups} 
+        onAddPlace={handleAddPlaceSubmit}
+       />
 
       <EditAvatarPopup 
         isOpen={isEditAvatarPopupOpen} 

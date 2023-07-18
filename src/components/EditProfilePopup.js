@@ -3,19 +3,19 @@ import PopupWithForm from "./PopupWithForm";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 export default function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
-    const [name, setName] = React.useState('');
+    const [userName, setUserName] = React.useState('');
     const [description, setDescription] = React.useState('');
     const currentUser = React.useContext(CurrentUserContext);
 
     React.useEffect(() => {
-        setName(currentUser.name);
+        setUserName(currentUser.name);
         setDescription(currentUser.about);
       }, [currentUser]); 
 
     function handleSubmit(e) {
         e.preventDefault();
         onUpdateUser({
-            name,
+            name: userName,
             about: description,
         })
     }
@@ -30,7 +30,7 @@ export default function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
             onSubmit={ handleSubmit }
             >
             <label className="popup__field">
-                <input type="text" value={name} onChange={e => setName(e.target.value)}  id="name-input" className="popup__input popup__input_type_name" name="name" placeholder="Имя" required minLength="2" maxLength="40" />
+                <input type="text" value={userName} onChange={e => setUserName(e.target.value)}  id="name-input" className="popup__input popup__input_type_name" name="name" placeholder="Имя" required minLength="2" maxLength="40" />
                 <span className="popup__input-error name-input-error"></span>
             </label>
             <label className="popup__field">

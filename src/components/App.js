@@ -32,11 +32,38 @@ function App() {
     setSelectedCard();
   }
 
+  function handleCardLike(card) {
+    const isLiked = card.likes.some(like => like._id === currentUser._id);
+    api
+      .changeLikeCardStatus(card._id, isLiked)
+      .then((newCard) => {
+        setCards((cards) => cards.map((c) => c._id === card._id ? newCard : c));
+      })
+      .catch(
+        (err) => {
+          console.log(err);
+      }
+      );
+
+  }
+
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState();
   const [currentUser, setCurrentUser] = React.useState({});
+  const [cards, setCards] = React.useState([]);
+
+  React.useEffect(() => {
+        api
+            .getInitialCards()
+            .then((initialCards) => {
+                setCards(initialCards);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+    }, []);
 
   React.useEffect(() => {
     api
@@ -60,6 +87,8 @@ function App() {
         onAddPlace = { handleAddPlaceClick }
         onEditAvatar = { handleEditAvatarClick }
         onCardClick={ handleCardClick }
+        onCardLike={ handleCardLike }
+        cards={ cards }
       />
       <Footer/>
 

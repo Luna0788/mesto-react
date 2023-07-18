@@ -1,25 +1,11 @@
 import React from "react";
 import api from "../utils/Api";
 import Card from "./Card";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
-    const [userName, setUserName] = React.useState();
-    const [userDescription, setUserDescription] = React.useState();
-    const [userAvatar, setUserAvatar] = React.useState();
+    const currentUser = React.useContext(CurrentUserContext);
     const [cards, setCards] = React.useState([]);
-
-    React.useEffect(() => {
-        api
-            .getUserInfo()
-            .then((userData) => {
-                setUserName(userData.name);
-                setUserDescription(userData.about);
-                setUserAvatar(userData.avatar);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    },[]);
 
     React.useEffect(() => {
         api
@@ -36,14 +22,14 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
         <main className="main">
             <section className="profile">
                 <div className="profile__main">
-                    <img src={ userAvatar } alt="Аватар пользователя" className="profile__avatar"/>
+                    <img src={ currentUser.avatar } alt="Аватар пользователя" className="profile__avatar"/>
                     <div className="profile__avatar-overlay" onClick={ onEditAvatar }></div>
                     <div className="profile__info">
                         <div className="profile__name-wrapper">
-                            <h1 className="profile__name">{ userName }</h1>
+                            <h1 className="profile__name">{ currentUser.name }</h1>
                             <button className="button button_type_edit" aria-label="Редактировать" type="button" onClick={ onEditProfile }></button>
                         </div>
-                        <p className="profile__additional">{ userDescription }</p>
+                        <p className="profile__additional">{ currentUser.about }</p>
                     </div>
                 </div>
                 <button className="button button_type_add" aria-label="Добавить" type="button" onClick={ onAddPlace }></button>

@@ -44,7 +44,17 @@ function App() {
           console.log(err);
       }
       );
+  }
 
+  function handleCardDelete(card) {
+    api
+    .deleteCard(card._id)
+    .then(() => {
+      setCards((cards) => cards.filter((c) => c._id !== card._id));
+    })
+    .catch((err) => {
+      console.log(err);
+    });
   }
 
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
@@ -88,6 +98,7 @@ function App() {
         onEditAvatar = { handleEditAvatarClick }
         onCardClick={ handleCardClick }
         onCardLike={ handleCardLike }
+        onCardDelete={handleCardDelete}
         cards={ cards }
       />
       <Footer/>
